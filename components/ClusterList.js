@@ -1,5 +1,11 @@
 // components/ClusterList.js
 
+// Компонент ClusterList принимает несколько пропсов
+// clusters: массив кластеров для отображения
+// selectedClusters: массив выбранных кластеров
+// onSelectCluster: функция для обработки выбора кластера
+// onSelectLocalProcessing: функция для обработки выбора локальной обработки
+// localProcessing: булево значение для индикации локальной обработки
 const ClusterList = ({
 	clusters,
 	selectedClusters,
@@ -13,6 +19,7 @@ const ClusterList = ({
 			<ul>
 				{clusters.map((cluster, index) => (
 					<li key={index}>
+						{/* Чекбокс для выбора кластера */}
 						<input
 							type='checkbox'
 							checked={selectedClusters.some(
@@ -22,11 +29,13 @@ const ClusterList = ({
 							onChange={() => onSelectCluster(cluster)}
 							disabled={selectedClusters.length > 0 && localProcessing}
 						/>
+						{/* Отображение IP и порта кластера */}
 						{cluster.ip}:{cluster.port}
 					</li>
 				))}
 			</ul>
 			<div>
+				{/* Чекбокс для выбора локальной обработки */}
 				<input
 					type='checkbox'
 					onChange={onSelectLocalProcessing}

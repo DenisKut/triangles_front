@@ -1,40 +1,63 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/pages/api-reference/create-next-app).
+## Клиентская часть проекта `triangles`
 
-## Getting Started
+### _Front-end часть для курсового проекта_
 
-First, run the development server:
+## Требования
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+Необходима установка стабильной LTS версии node.js + npm и yarn для запуска:
+
+- [Node.js](https://nodejs.org/) - последняя версия ^20
+- [npm](https://www.npmjs.com/) - версия ^10
+- [yarn](https://classic.yarnpkg.com/lang/en/docs/install/#windows-stable) - версия ^1.22.22
+
+ПРИМЕЧАНИЕ:
+_**Установить `node.js` + `npm` можно при помощи [nvm](https://dev.to/skaytech/how-to-install-node-version-manager-nvm-for-windows-10-4nbi?ysclid=m4dykqasp221873997)**_
+
+## Пошаговая инструкция по установке проекта:
+
+1. Клонируйте репозиторий: `git clone https://github.com/DenisKut/triangles_front.git`
+2. Перейдите в директорию проекта: `cd ваш-репозиторий`
+3. Установите зависимости: `yarn install`
+
+**Далее производим запуск стандартными командами через npm:**
+
+1. `yarn run dev` - сборка и запуск в режиме разработки
+
+### Открытие приложения происходит по ссылке:
+
+http://localhost:3001/
+
+## Самые значимые файлы:
+
+```/
+|-- components/...................... # Директория с используемыми компонентами
+|   |                                   в приложении
+|   |-- ClusterList.js............... # Файл компонента, отвечающего за вывод
+|   |                                   списка доступных кластеров
+|   |-- Echarts3D.js................. # Компонент отображения графика библиотеки
+|   |                                   Echarts.js
+|   |-- Plotly3DViewer.js............ # Файл компонента (используемого) графика
+|   |                                   при помощи библиотеки Plotly.js
+|   |-- ResultList.js................ # Файл компонента, реализующего
+|   |                                   отображение списка результирующих
+|   |                                   вычислений
+|   |__
+|-- pages/........................... # Директория, хранящая отображаемые
+|   |                                   страницы
+|   |-- api/......................... # Директория, предназначенная для
+|   |                                   серверной логики (не используется)
+|   |-- fonts/....................... # Каталог с подключаемыми шрифтами для
+|   |                                   страницы
+|   |-- _app.js...................... # Файл, обрабатывающий структурную логику
+|   |                                   по страницам
+|   |-- _documents.js................ # Файл, содержащий JSX ВСЕГО корневого
+|   |                                   документа страницы
+|   |-- index.js..................... # Файл, реализующий Home-страницу по
+|   |                                   корневому пути в браузере
+|   |__
+|-- styles/.......................... # Каталог с таблицами стилей для всего
+|                                       приложения
+|-- * ............................... # Файлы конфигурации сборки, настройки и
+|                                       т.д
+|___
 ```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
-
-[API routes](https://nextjs.org/docs/pages/building-your-application/routing/api-routes) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
-
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/pages/building-your-application/routing/api-routes) instead of React pages.
-
-This project uses [`next/font`](https://nextjs.org/docs/pages/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn-pages-router) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/pages/building-your-application/deploying) for more details.

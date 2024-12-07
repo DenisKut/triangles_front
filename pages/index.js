@@ -1,24 +1,28 @@
-// pages/index.js
 import dynamic from 'next/dynamic'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import io from 'socket.io-client'
 import ClusterList from '../components/ClusterList'
 import ResultList from '../components/ResultList'
 
+// Динамическая загрузка компонента Plotly3DViewer
 const Plotly3DViewer = dynamic(() => import('../components/Plotly3DViewer'), {
-	ssr: false,
+	ssr: false, // Отключение серверного рендеринга для этого компонента
 })
 
 const Home = () => {
-	const [clusters, setClusters] = useState([])
-	const [selectedClusters, setSelectedClusters] = useState([])
-	const [points, setPoints] = useState([])
-	const [results, setResults] = useState([])
-	const [selectedTriangle, setSelectedTriangle] = useState([])
-	const [localProcessing, setLocalProcessing] = useState(false)
-	const [fileContent, setFileContent] = useState('')
-	const [socket, setSocket] = useState(null)
+	// Состояния для хранения данных
+	const [clusters, setClusters] = useState([]) // Кластеры
+	const [selectedClusters, setSelectedClusters] = useState([]) // Выбранные кластеры
+	const [points, setPoints] = useState([]) // Точки
+	const [results, setResults] = useState([]) // Результаты
+	const [selectedTriangle, setSelectedTriangle] = useState([]) // Выбранный треугольник
+	const [localProcessing, setLocalProcessing] = useState(false) // Флаг для локальной обработки
+	const [fileContent, setFileContent] = useState('') // Содержимое файла
+	const [socket, setSocket] = useState(null) // Сокет
+	const [executionTime, setExecutionTime] = useState(0) // Новое состояние для времени выполнения
+	const startTimeRef = useRef(0) // Хук useRef для хранения времени начала
 
+	// useEffect для настройки сокета и прослушивания событий
 	useEffect(() => {
 		const newSocket = io('http://localhost:3000', {
 			reconnectionAttempts: 5,
@@ -39,6 +43,8 @@ const Home = () => {
 			if (data && data.data) {
 				setResults(data.data)
 				console.log('Results set:', data.data)
+				const endTime = performance.now()
+				setExecutionTime(endTime - startTimeRef.current) // Установка времени выполнения
 			} else {
 				console.log('No results received')
 			}
@@ -67,6 +73,7 @@ const Home = () => {
 		}
 	}, [selectedClusters])
 
+	// Обработчик выбора кластера
 	const handleSelectCluster = cluster => {
 		setSelectedClusters(prevSelected => {
 			if (
@@ -84,10 +91,12 @@ const Home = () => {
 		})
 	}
 
+	// Обработчик выбора локальной обработки
 	const handleSelectLocalProcessing = () => {
 		setLocalProcessing(!localProcessing)
 	}
 
+	// Обработчик изменения файла
 	const handleFileChange = file => {
 		const reader = new FileReader()
 		reader.onload = event => {
@@ -97,15 +106,18 @@ const Home = () => {
 		reader.readAsText(file)
 	}
 
+	// Обработчик загрузки файла
 	const handleFileUpload = () => {
 		if (!fileContent || !socket) return
 
 		setPoints(JSON.parse(fileContent).points)
 		console.log('Points set:', JSON.parse(fileContent).points)
+		startTimeRef.current = performance.now() // Начало замера времени
 		socket.emit('uploadJson', { jsonContent: fileContent })
 		console.log('File uploaded with content:', fileContent)
 	}
 
+	// Обработчик выбора треугольника
 	const handleSelectTriangle = vertices => {
 		setSelectedTriangle(vertices)
 		console.log('Selected triangle:', vertices)
@@ -128,6 +140,8 @@ const Home = () => {
 					onChange={e => handleFileChange(e.target.files[0])}
 				/>
 				<button onClick={handleFileUpload}>Send Data</button>
+				<p>Execution Time: {executionTime.toFixed(2)} ms</p>{' '}
+				{/* Отображение времени выполнения */}
 				<Plotly3DViewer points={points} selectedTriangle={selectedTriangle} />
 				<ResultList results={results} onSelectTriangle={handleSelectTriangle} />
 			</main>
